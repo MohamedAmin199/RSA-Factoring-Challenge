@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+check_factor()
+{
+	if [ $# -ne 1 ]; then
+		local args=("$@")
+		local num1=${args[0]}
+		local num2=1
+
+		if [ ${#args[@]} -eq 2 ]; then
+			num2=${args[1]}
+		fi
+
+		if [ $num2 -gt $num1 ]; then
+			local temp=$num1
+			num1=$num2
+			num2=$temp
+		fi
+
+		echo "${num1}:${num2}"
+	fi
+}
+
+if [ $# -ne 1 ]; then
+	echo 'Usage: factors <file>'
+	exit 1
+fi
+
+while read i; do
+	factors=$(factor "$i")
+	check_factor $factors
+done < "$1"
